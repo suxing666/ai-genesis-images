@@ -1,0 +1,10 @@
+@import './variables.css';
+@import './background.css';
+@import './sidebar.css';
+@import './layout.css';
+@import './size-selector.css';
+@import './generate.css';
+@import './results.css';
+@import './notification.css';
+@import './scrollbar.css';
+@import './responsive.css';

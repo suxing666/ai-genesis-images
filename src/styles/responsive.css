@@ -1,0 +1,64 @@
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .frame-inputs {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: 2rem 1rem;
+    }
+
+    .logo {
+        font-size: 2.5rem;
+    }
+
+    .logo-line {
+        width: 60px;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .panel-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .tab-nav {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .tab-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .params-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .image-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .size-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .size-card {
+        padding: 0.75rem;
+    }
+
+    .size-preview {
+        height: 50px;
+    }
+
+    .category-tab {
+        font-size: 0.8125rem;
+        padding: 0.5rem 1rem;
+    }
+}
