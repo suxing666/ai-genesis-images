@@ -32,14 +32,15 @@ export function initSidebar() {
         document.body.style.overflow = '';
     }
 
-    settingsBtn.addEventListener('click', openSidebar);
     closeSidebarBtn.addEventListener('click', closeSidebarPanel);
     overlay.addEventListener('click', closeSidebarPanel);
 
-    // 悬浮按钮拖拽功能
+    // 悬浮按钮：长按拖拽 + 单击打开侧边栏
     (function initDraggableBtn() {
-        let isDragging = false;
-        let hasMoved = false;
+        const DRAG_DELAY = 300; // 长按阈值（毫秒）
+        let pressTimer = null;
+        let isDragReady = false; // 长按计时器到期，进入拖拽就绪
+        let isDragging = false;  // 实际发生了拖拽移动
         let offsetX, offsetY;
 
         function onStart(e) {
@@ -47,14 +48,20 @@ export function initSidebar() {
             const rect = settingsBtn.getBoundingClientRect();
             offsetX = touch.clientX - rect.left;
             offsetY = touch.clientY - rect.top;
-            isDragging = true;
-            hasMoved = false;
-            settingsBtn.classList.add('dragging');
+            isDragReady = false;
+            isDragging = false;
+
+            // 长按后才进入拖拽模式
+            pressTimer = setTimeout(() => {
+                isDragReady = true;
+                settingsBtn.classList.add('dragging');
+            }, DRAG_DELAY);
         }
 
         function onMove(e) {
-            if (!isDragging) return;
+            if (!isDragReady) return;
             e.preventDefault();
+            isDragging = true;
             const touch = e.touches ? e.touches[0] : e;
             const x = touch.clientX - offsetX;
             const y = touch.clientY - offsetY;
@@ -68,13 +75,14 @@ export function initSidebar() {
             settingsBtn.style.top = clampedY + 'px';
             settingsBtn.style.right = 'auto';
             settingsBtn.style.bottom = 'auto';
-            hasMoved = true;
         }
 
         function onEnd() {
-            if (!isDragging) return;
-            isDragging = false;
+            clearTimeout(pressTimer);
             settingsBtn.classList.remove('dragging');
+            isDragReady = false;
+            // 延迟重置 isDragging，让紧随 mouseup 的 click 事件仍能读到 true
+            requestAnimationFrame(() => { isDragging = false; });
         }
 
         settingsBtn.addEventListener('mousedown', onStart);
@@ -85,9 +93,13 @@ export function initSidebar() {
         document.addEventListener('touchmove', onMove, { passive: false });
         document.addEventListener('touchend', onEnd);
 
-        // 拖拽时阻止点击打开侧边栏
+        // 单击：只在没有拖拽时打开侧边栏
         settingsBtn.addEventListener('click', (e) => {
-            if (hasMoved) e.stopImmediatePropagation();
+            if (isDragging) {
+                e.stopImmediatePropagation();
+                return;
+            }
+            openSidebar();
         });
     })();
 
