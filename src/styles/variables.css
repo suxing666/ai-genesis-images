@@ -1,14 +1,15 @@
 :root {
-    --bg-dark: #0a0a0f;
-    --bg-card: rgba(20, 20, 30, 0.7);
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0b8;
-    --accent-cyan: #00f0ff;
-    --accent-magenta: #ff00ff;
-    --accent-yellow: #ffff00;
-    --border-color: rgba(255, 255, 255, 0.1);
-    --glow-cyan: rgba(0, 240, 255, 0.3);
-    --glow-magenta: rgba(255, 0, 255, 0.3);
+    --bg-primary: #F9F8F6;
+    --bg-card: #F9F8F6;
+    --text-primary: #1C1C1C;
+    --text-secondary: rgba(28, 28, 28, 0.6);
+    --text-aux: rgba(28, 28, 28, 0.4);
+    --text-muted: rgba(28, 28, 28, 0.25);
+    --border-color: rgba(28, 28, 28, 0.12);
+    --border-emphasis: rgba(28, 28, 28, 0.25);
+    --hover-bg: rgba(28, 28, 28, 0.02);
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'DM Sans', sans-serif;
 }
 
 * {
@@ -18,8 +19,8 @@
 }
 
 body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg-dark);
+    font-family: var(--font-sans);
+    background: var(--bg-primary);
     color: var(--text-primary);
     overflow-x: hidden;
     min-height: 100vh;

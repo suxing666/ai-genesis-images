@@ -1,16 +1,16 @@
-/* 尺寸选择器 */
-.size-selector-wrapper {
+/* 风格选择器 */
+.style-selector-wrapper {
     margin-bottom: 2rem;
 }
 
-.size-categories {
+.style-categories {
     display: flex;
     gap: 1.5rem;
     margin-bottom: 1.5rem;
     flex-wrap: wrap;
 }
 
-.category-tab {
+.style-category-tab {
     position: relative;
     padding: 0.5rem 0;
     background: transparent;
@@ -28,7 +28,7 @@
     letter-spacing: 0.1em;
 }
 
-.category-tab::after {
+.style-category-tab::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -40,36 +40,36 @@
     transition: transform 0.3s ease;
 }
 
-.category-tab:hover {
+.style-category-tab:hover {
     color: var(--text-primary);
     background: transparent;
     transform: none;
     border-color: transparent;
 }
 
-.category-tab:hover::after {
+.style-category-tab:hover::after {
     transform: scaleX(1);
 }
 
-.category-tab.active {
+.style-category-tab.active {
     color: var(--text-primary);
     background: transparent;
     border-color: transparent;
     box-shadow: none;
 }
 
-.category-tab.active::after {
+.style-category-tab.active::after {
     transform: scaleX(1);
 }
 
-.size-grid {
+.style-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 1rem;
     margin-bottom: 1.5rem;
 }
 
-.size-card {
+.style-card {
     position: relative;
     padding: 1rem;
     background: transparent;
@@ -80,30 +80,20 @@
     overflow: hidden;
 }
 
-.size-card::before {
-    display: none;
-}
-
-.size-card:hover {
+.style-card:hover {
     border-color: var(--text-secondary);
-    transform: none;
-    box-shadow: none;
 }
 
-.size-card.selected {
+.style-card.selected {
     border-color: var(--text-primary);
-    background: transparent;
-    box-shadow: none;
     border-bottom-width: 3px;
 }
 
-.size-info {
+.style-info {
     text-align: center;
-    position: relative;
-    z-index: 1;
 }
 
-.size-label {
+.style-label {
     font-size: 0.75rem;
     font-weight: 500;
     color: var(--text-primary);
@@ -111,12 +101,31 @@
     letter-spacing: 0.02em;
 }
 
-.size-dimensions {
-    font-size: 0.6875rem;
+.style-hint {
+    font-size: 0.625rem;
     color: var(--text-secondary);
     font-family: 'Courier New', monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.size-card.selected .size-label {
+.style-card.selected .style-label {
     color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+    .style-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .style-card {
+        padding: 0.75rem;
+    }
+
+    .style-category-tab {
+        font-size: 0.75rem;
+        padding: 0.375rem 0;
+    }
 }

@@ -1,35 +1,31 @@
-/* 设置按钮（悬浮可拖拽） */
+/* 设置按钮 */
 .settings-btn {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
     z-index: 100;
-    width: 56px;
-    height: 56px;
-    border: 2px solid var(--border-color);
-    background: var(--bg-card);
-    backdrop-filter: blur(20px);
-    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    border-radius: 0;
     color: var(--text-primary);
     cursor: grab;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     user-select: none;
     touch-action: none;
 }
 
 .settings-btn:hover {
-    border-color: var(--accent-cyan);
-    box-shadow: 0 0 30px var(--glow-cyan);
+    opacity: 0.7;
 }
 
 .settings-btn.dragging {
     cursor: grabbing;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 30px var(--glow-cyan);
-    border-color: var(--accent-cyan);
+    opacity: 0.7;
     transition: none;
 }
 
@@ -46,8 +42,7 @@
     right: 0;
     width: 420px;
     height: 100vh;
-    background: var(--bg-card);
-    backdrop-filter: blur(30px);
+    background: var(--bg-primary);
     border-left: 1px solid var(--border-color);
     z-index: 90;
     transform: translateX(100%);
@@ -71,9 +66,9 @@
 }
 
 .sidebar-header h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-size: 1.75rem;
-    font-weight: 700;
+    font-weight: 400;
 }
 
 .close-btn {
@@ -81,18 +76,17 @@
     height: 40px;
     border: 1px solid var(--border-color);
     background: transparent;
-    border-radius: 8px;
+    border-radius: 0;
     color: var(--text-primary);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .close-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--accent-magenta);
+    opacity: 0.6;
 }
 
 .config-section {
@@ -102,16 +96,19 @@
 }
 
 .section-title {
-    font-size: 1.125rem;
-    font-weight: 600;
+    font-size: 0.6875rem;
+    font-weight: 500;
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-aux);
 }
 
 .icon {
-    font-size: 1.25rem;
+    display: none;
 }
 
 .input-group {
@@ -121,29 +118,31 @@
 
 .input-group label {
     display: block;
-    font-size: 0.875rem;
-    color: var(--text-secondary);
+    font-size: 0.6875rem;
+    color: var(--text-aux);
     margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
 }
 
 .input-group input {
     width: 100%;
-    padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+    padding: 0.75rem 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 0;
     color: var(--text-primary);
     font-size: 0.875rem;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease;
 }
 
 .input-group input:focus {
     outline: none;
-    border-color: var(--accent-cyan);
-    box-shadow: 0 0 20px var(--glow-cyan);
+    border-bottom-color: var(--text-primary);
 }
 
-/* 数字输入框箭头样式 */
+/* 数字输入框 */
 .input-group input[type="number"] {
     position: relative;
     -moz-appearance: textfield;
@@ -158,22 +157,20 @@
     margin: 0;
 }
 
-/* 数字输入包裹容器 */
 .number-input-wrapper {
     position: relative;
 }
 
-/* 自定义箭头按钮容器 */
 .number-input-wrapper .number-controls {
     position: absolute;
-    right: 1px;
-    top: 1px;
-    bottom: 1px;
+    right: 0;
+    top: 0;
+    bottom: 0;
     height: auto;
     width: 2.5rem;
-    background: rgba(0, 0, 0, 0.3);
+    background: transparent;
     border-left: 1px solid var(--border-color);
-    border-radius: 0 7px 7px 0;
+    border-radius: 0;
     overflow: hidden;
     pointer-events: all;
     display: flex;
@@ -190,57 +187,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.2s ease;
     position: relative;
-    overflow: hidden;
 }
 
-.number-controls button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
-    opacity: 0;
-    transition: opacity 0.25s ease;
-}
-
+.number-controls button::before,
 .number-controls button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: radial-gradient(circle, rgba(0, 240, 255, 0.6), transparent);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.4s ease, height 0.4s ease;
+    display: none;
 }
 
 .number-controls button:hover {
-    color: var(--accent-cyan);
-    background: rgba(0, 240, 255, 0.05);
-}
-
-.number-controls button:hover::before {
-    opacity: 0.15;
-}
-
-.number-controls button:hover::after {
-    width: 100px;
-    height: 100px;
+    color: var(--text-primary);
+    background: var(--hover-bg);
 }
 
 .number-controls button:active {
-    transform: scale(0.92);
-    color: var(--accent-magenta);
-}
-
-.number-controls button:active::before {
-    opacity: 0.3;
+    transform: none;
+    opacity: 0.6;
 }
 
 .number-controls button svg {
@@ -248,33 +211,30 @@
     height: 12px;
     position: relative;
     z-index: 1;
-    filter: drop-shadow(0 0 6px currentColor);
-    transition: all 0.25s ease;
+    filter: none;
+    transition: none;
 }
 
 .number-controls button:hover svg {
-    transform: scale(1.15);
-    filter: drop-shadow(0 0 10px currentColor);
+    transform: none;
+    filter: none;
 }
 
 .number-controls .increment {
-    border-radius: 0 7px 0 0;
+    border-radius: 0;
     border-bottom: 0.5px solid var(--border-color);
 }
 
 .number-controls .decrement {
-    border-radius: 0 0 7px 0;
+    border-radius: 0;
 }
 
-/* 输入框聚焦时箭头容器的样式 */
 .number-input-wrapper input[type="number"]:focus + .number-controls {
-    border-left-color: var(--accent-cyan);
-    background: rgba(0, 240, 255, 0.08);
-    box-shadow: -2px 0 10px var(--glow-cyan);
+    border-left-color: var(--text-primary);
 }
 
 .number-input-wrapper input[type="number"]:focus + .number-controls button {
-    color: var(--accent-cyan);
+    color: var(--text-primary);
 }
 
 .btn-primary,
@@ -282,51 +242,55 @@
     width: 100%;
     padding: 1rem;
     border: none;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 1rem;
+    border-radius: 0;
+    font-weight: 500;
+    font-size: 0.8125rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease;
     margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
-    color: var(--text-primary);
+    background: var(--text-primary);
+    color: var(--bg-primary);
 }
 
 .btn-primary:hover {
-    box-shadow: 0 0 40px var(--glow-cyan), 0 0 40px var(--glow-magenta);
-    transform: translateY(-2px);
+    opacity: 0.85;
 }
 
 .btn-danger {
-    background: rgba(255, 50, 50, 0.2);
-    border: 1px solid rgba(255, 50, 50, 0.5);
-    color: #ff5050;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    padding: 0.5rem 0;
 }
 
 .btn-danger:hover {
-    background: rgba(255, 50, 50, 0.3);
-    box-shadow: 0 0 30px rgba(255, 50, 50, 0.3);
+    color: var(--text-primary);
 }
 
 .info-box {
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
-    padding: 1rem;
-    background: rgba(255, 255, 0, 0.1);
-    border: 1px solid rgba(255, 255, 0, 0.3);
-    border-radius: 8px;
+    padding: 1rem 0;
+    background: transparent;
+    border: none;
+    border-top: 1px solid var(--border-color);
+    border-radius: 0;
     font-size: 0.75rem;
-    color: var(--text-secondary);
+    color: var(--text-aux);
 }
 
 .info-box svg {
     flex-shrink: 0;
     margin-top: 2px;
-    color: var(--accent-yellow);
+    color: var(--text-secondary);
 }
 
 /* 遮罩层 */
@@ -336,8 +300,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
+    background: rgba(28, 28, 28, 0.3);
     z-index: 80;
     opacity: 0;
     pointer-events: none;

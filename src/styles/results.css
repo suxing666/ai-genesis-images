@@ -3,7 +3,6 @@
     display: none;
     text-align: center;
     padding: 3rem 0;
-    animation: fadeIn 0.3s ease;
 }
 
 .loading-state.active {
@@ -12,8 +11,8 @@
 
 .loading-spinner {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     margin: 0 auto 2rem;
 }
 
@@ -23,14 +22,14 @@
     left: 0;
     width: 100%;
     height: 100%;
-    border: 3px solid transparent;
-    border-top-color: var(--accent-cyan);
+    border: 2px solid transparent;
+    border-top-color: var(--text-primary);
     border-radius: 50%;
     animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
 }
 
 .spinner-ring:nth-child(2) {
-    border-top-color: var(--accent-magenta);
+    border-top-color: rgba(28, 28, 28, 0.4);
     animation-delay: 0.3s;
     width: 80%;
     height: 80%;
@@ -39,7 +38,7 @@
 }
 
 .spinner-ring:nth-child(3) {
-    border-top-color: var(--accent-yellow);
+    border-top-color: rgba(28, 28, 28, 0.15);
     animation-delay: 0.6s;
     width: 60%;
     height: 60%;
@@ -57,7 +56,7 @@
 }
 
 .loading-text {
-    font-size: 1rem;
+    font-size: 0.875rem;
     color: var(--text-secondary);
     animation: pulse 2s ease-in-out infinite;
 }
@@ -77,7 +76,6 @@
     margin-top: 3rem;
     padding-top: 3rem;
     border-top: 1px solid var(--border-color);
-    animation: fadeInUp 0.6s ease;
 }
 
 .results-container.active {
@@ -85,9 +83,9 @@
 }
 
 .results-title {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-serif);
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 400;
     margin-bottom: 2rem;
     color: var(--text-primary);
 }
@@ -101,29 +99,20 @@
 
 .image-item {
     position: relative;
-    border-radius: 16px;
+    border-radius: 0;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
-    animation: scaleIn 0.5s ease;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.3s ease;
+    padding-bottom: 1rem;
 }
 
 .image-item:hover {
-    transform: translateY(-8px);
-    border-color: var(--accent-cyan);
-    box-shadow: 0 20px 60px var(--glow-cyan);
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    background: rgba(28, 28, 28, 0.02);
+    transform: none;
+    border-color: var(--border-color);
+    box-shadow: none;
 }
 
 .image-item img {
@@ -138,7 +127,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.8));
+    background: rgba(28, 28, 28, 0.6);
     opacity: 0;
     transition: opacity 0.3s ease;
     display: flex;
@@ -152,22 +141,23 @@
 }
 
 .download-btn {
-    padding: 0.75rem 2rem;
-    background: var(--accent-cyan);
+    padding: 0.625rem 1.5rem;
+    background: var(--text-primary);
     border: none;
-    border-radius: 8px;
-    color: var(--bg-dark);
-    font-weight: 600;
-    font-size: 0.9375rem;
+    border-radius: 0;
+    color: var(--bg-primary);
+    font-weight: 500;
+    font-size: 0.75rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease;
     text-decoration: none;
     display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
 }
 
 .download-btn:hover {
-    background: var(--accent-magenta);
-    transform: scale(1.05);
+    opacity: 0.85;
 }
 
 /* 视频容器 */
@@ -192,10 +182,10 @@
 .optional-tag {
     font-size: 0.6875rem;
     font-weight: 400;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.06);
-    padding: 0.125rem 0.5rem;
-    border-radius: 4px;
+    color: var(--text-aux);
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
     margin-left: 0.5rem;
     text-transform: none;
     letter-spacing: 0;
@@ -203,10 +193,10 @@
 
 .frame-drop-zone {
     position: relative;
-    border: 2px dashed var(--border-color);
-    border-radius: 14px;
+    border: 1px dashed var(--border-color);
+    border-radius: 0;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease;
     overflow: hidden;
     min-height: 140px;
     display: flex;
@@ -215,19 +205,17 @@
 }
 
 .frame-drop-zone:hover {
-    border-color: var(--accent-cyan);
-    background: rgba(0, 240, 255, 0.03);
+    border-color: var(--text-secondary);
 }
 
 .frame-drop-zone.drag-over {
-    border-color: var(--accent-magenta);
-    background: rgba(255, 0, 255, 0.05);
-    box-shadow: 0 0 30px var(--glow-magenta);
+    border-color: var(--text-primary);
+    background: var(--hover-bg);
 }
 
 .frame-drop-zone.has-image {
     border-style: solid;
-    border-color: var(--accent-cyan);
+    border-color: var(--border-emphasis);
 }
 
 .frame-file-input {
@@ -244,13 +232,13 @@
     align-items: center;
     gap: 0.5rem;
     padding: 1.5rem 1rem;
-    color: var(--text-secondary);
+    color: var(--text-aux);
     text-align: center;
 }
 
 .frame-placeholder svg {
-    opacity: 0.5;
-    color: var(--accent-cyan);
+    opacity: 0.4;
+    color: var(--text-secondary);
 }
 
 .frame-placeholder span {
@@ -281,31 +269,27 @@
     right: 0.5rem;
     width: 28px;
     height: 28px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.7);
-    color: #ff5050;
+    border: 1px solid var(--border-color);
+    border-radius: 0;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
-    backdrop-filter: blur(4px);
+    transition: opacity 0.2s ease;
 }
 
 .frame-remove-btn:hover {
-    background: rgba(255, 50, 50, 0.8);
-    color: #fff;
-    transform: scale(1.1);
+    opacity: 0.7;
 }
 
 .video-wrapper {
     position: relative;
-    border-radius: 16px;
+    border-radius: 0;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.03);
+    background: transparent;
     border: 1px solid var(--border-color);
-    animation: scaleIn 0.5s ease;
 }
 
 .video-wrapper video {

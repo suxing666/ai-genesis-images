@@ -2,7 +2,7 @@
 .main-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 3rem 2rem;
+    padding: 4rem 2rem;
     position: relative;
     z-index: 1;
 }
@@ -11,7 +11,6 @@
 .header {
     text-align: center;
     margin-bottom: 4rem;
-    animation: fadeInDown 1s ease;
 }
 
 .logo-section {
@@ -19,109 +18,95 @@
     align-items: center;
     justify-content: center;
     gap: 1.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 4rem;
+    font-family: var(--font-serif);
+    font-size: 5rem;
     font-weight: 900;
-    letter-spacing: 0.1em;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta), var(--accent-yellow));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: shimmer 3s ease-in-out infinite;
+    letter-spacing: -0.05em;
+    color: var(--text-primary);
 }
 
 .logo-line {
-    width: 100px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-    animation: pulse 2s ease-in-out infinite;
+    display: none;
 }
 
 .tagline {
     font-size: 1.125rem;
-    color: var(--text-secondary);
+    color: var(--text-aux);
     letter-spacing: 0.05em;
-}
-
-@keyframes shimmer {
-    0%, 100% {
-        filter: hue-rotate(0deg);
-    }
-    50% {
-        filter: hue-rotate(30deg);
-    }
-}
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    font-style: italic;
 }
 
 /* 标签导航 */
 .tab-nav {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 2rem;
     margin-bottom: 3rem;
-    animation: fadeIn 1s ease 0.3s both;
 }
 
 .tab-btn {
     position: relative;
-    padding: 1rem 2.5rem;
-    background: var(--bg-card);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    color: var(--text-secondary);
-    font-size: 1rem;
+    padding: 0.75rem 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    color: var(--text-aux);
+    font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    overflow: hidden;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
 }
 
 .tab-btn::before {
+    display: none;
+}
+
+.tab-btn::after {
     content: '';
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    height: 1.5px;
+    background: var(--text-primary);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
 }
 
 .tab-btn:hover {
-    border-color: var(--accent-cyan);
-    transform: translateY(-2px);
+    color: var(--text-primary);
+    transform: none;
+    border-color: transparent;
+}
+
+.tab-btn:hover::after {
+    transform: scaleX(1);
 }
 
 .tab-btn.active {
     color: var(--text-primary);
-    border-color: var(--accent-cyan);
+    border-color: transparent;
+}
+
+.tab-btn.active::after {
+    transform: scaleX(1);
 }
 
 .tab-btn.active::before {
-    opacity: 0.2;
+    display: none;
 }
 
 .tab-icon {
-    font-size: 1.25rem;
+    font-size: 1rem;
     position: relative;
     z-index: 1;
 }
@@ -132,99 +117,49 @@
 }
 
 .tab-indicator {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%) scaleX(0);
-    width: 80%;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
-    transition: transform 0.3s ease;
-}
-
-.tab-btn.active .tab-indicator {
-    transform: translateX(-50%) scaleX(1);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    display: none;
 }
 
 /* 面板 */
 .panel {
     display: none;
-    animation: fadeInUp 0.6s ease;
 }
 
 .panel.active {
     display: block;
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .panel-card {
-    background: var(--bg-card);
-    backdrop-filter: blur(30px);
-    border: 1px solid var(--border-color);
-    border-radius: 24px;
-    padding: 3rem;
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 0;
+    padding: 3rem 0;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .panel-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(0, 240, 255, 0.05), transparent 50%);
-    animation: rotate 20s linear infinite;
-    pointer-events: none;
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+    display: none;
 }
 
 .card-header {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     position: relative;
 }
 
 .card-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    font-weight: 700;
+    font-family: var(--font-serif);
+    font-size: 2.25rem;
+    font-weight: 400;
 }
 
 .header-decoration {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--accent-cyan), transparent);
+    display: none;
 }
 
 /* 表单容器 */
@@ -240,52 +175,41 @@
 
 .input-label {
     display: block;
-    font-size: 0.875rem;
+    font-size: 0.6875rem;
     font-weight: 500;
-    color: var(--text-secondary);
+    color: var(--text-aux);
     margin-bottom: 0.75rem;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
 }
 
 textarea {
     width: 100%;
-    padding: 1.25rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
+    padding: 1rem 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 0;
     color: var(--text-primary);
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-serif);
     font-size: 1rem;
     line-height: 1.6;
     resize: none;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease;
 }
 
 textarea:focus {
     outline: none;
-    border-color: var(--accent-cyan);
-    background: rgba(255, 255, 255, 0.05);
+    border-bottom-color: var(--text-primary);
+    background: transparent;
 }
 
 textarea::placeholder {
-    color: var(--text-secondary);
-    opacity: 0.5;
+    color: var(--text-muted);
 }
 
 .input-glow {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-}
-
-textarea:focus + .input-glow {
-    transform: scaleX(1);
+    display: none;
 }
 
 /* 参数网格 */
@@ -298,34 +222,36 @@ textarea:focus + .input-glow {
 
 .param-item label {
     display: block;
-    font-size: 0.875rem;
+    font-size: 0.6875rem;
     font-weight: 500;
-    color: var(--text-secondary);
+    color: var(--text-aux);
     margin-bottom: 0.75rem;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
 }
 
 .param-item select {
     width: 100%;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
+    padding: 0.75rem 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 0;
     color: var(--text-primary);
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.9375rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease;
+    appearance: none;
 }
 
 .param-item select:focus {
     outline: none;
-    border-color: var(--accent-cyan);
-    background: rgba(255, 255, 255, 0.05);
+    border-bottom-color: var(--text-primary);
+    background: transparent;
 }
 
 .param-item select option {
-    background: var(--bg-dark);
+    background: var(--bg-primary);
     color: var(--text-primary);
 }

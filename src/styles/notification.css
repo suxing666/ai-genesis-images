@@ -5,16 +5,15 @@
     left: 50%;
     transform: translateX(-50%) translateY(-100px);
     padding: 1rem 2rem;
-    background: var(--bg-card);
-    backdrop-filter: blur(30px);
+    background: var(--bg-primary);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 0;
     color: var(--text-primary);
     font-weight: 500;
+    font-size: 0.875rem;
     z-index: 1000;
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 .notification.show {
@@ -23,11 +22,9 @@
 }
 
 .notification.success {
-    border-color: var(--accent-cyan);
-    box-shadow: 0 10px 40px var(--glow-cyan);
+    border-bottom: 2px solid var(--text-primary);
 }
 
 .notification.error {
-    border-color: #ff5050;
-    box-shadow: 0 10px 40px rgba(255, 50, 50, 0.3);
+    border-bottom: 2px solid var(--text-secondary);
 }

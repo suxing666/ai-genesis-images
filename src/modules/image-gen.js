@@ -1,5 +1,6 @@
 import { loadConfig } from './config.js';
 import { showNotification } from './notification.js';
+import { initFrameUpload } from './file-upload.js';
 
 // 图片生成
 export function initImageGeneration() {
@@ -11,12 +12,39 @@ export function initImageGeneration() {
     const imageLoading = document.getElementById('imageLoading');
     const imageResults = document.getElementById('imageResults');
     const imageGrid = document.getElementById('imageGrid');
+    const refImageSection = document.getElementById('refImageSection');
+    const modeBtns = document.querySelectorAll('.mode-btn');
+
+    let currentMode = 'text2img';
+    let refImageData = null;
+
+    // 模式切换
+    modeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            modeBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentMode = btn.dataset.mode;
+            refImageSection.style.display = currentMode === 'img2img' ? '' : 'none';
+        });
+    });
+
+    // 初始化参考图片上传
+    initFrameUpload(
+        'refImageZone', 'refImageFile', 'refImagePlaceholder',
+        'refImagePreview', 'refImageImg', 'removeRefImage',
+        (data) => { refImageData = data; }
+    );
 
     generateImageBtn.addEventListener('click', async () => {
         const prompt = imagePrompt.value.trim();
 
         if (!prompt) {
             showNotification('请输入图片描述', 'error');
+            return;
+        }
+
+        if (currentMode === 'img2img' && !refImageData) {
+            showNotification('请上传参考图片', 'error');
             return;
         }
 
@@ -32,18 +60,29 @@ export function initImageGeneration() {
                 throw new Error('请先配置图片生成 API');
             }
 
-            const response = await fetch(config.image.endpoint, {
+            const requestBody = {
+                    prompt: prompt,
+                    size: imageSize.value,
+                    n: parseInt(imageCount.value),
+                };
+
+                const styleValue = imageStyle.value;
+                if (styleValue && styleValue !== '-') {
+                    requestBody.style = styleValue;
+                }
+
+                // 图生图模式附带参考图片
+                if (currentMode === 'img2img' && refImageData) {
+                    requestBody.image = refImageData;
+                }
+
+                const response = await fetch(config.image.endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${config.image.apiKey}`
                 },
-                body: JSON.stringify({
-                    prompt: prompt,
-                    size: imageSize.value,
-                    n: parseInt(imageCount.value),
-                    style: imageStyle.value
-                }),
+                body: JSON.stringify(requestBody),
                 signal: AbortSignal.timeout(config.timeout)
             });
 

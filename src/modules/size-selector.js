@@ -52,26 +52,7 @@ export function initSizeSelector() {
             }
 
             // 计算预览框的尺寸（保持比例，最大高度60px）
-            const maxHeight = 60;
-            const maxWidth = 100;
-            let previewWidth, previewHeight;
-
-            const aspectRatio = size.width / size.height;
-
-            if (aspectRatio > 1) {
-                // 横向
-                previewWidth = Math.min(maxWidth, maxHeight * aspectRatio);
-                previewHeight = previewWidth / aspectRatio;
-            } else {
-                // 竖向或方形
-                previewHeight = maxHeight;
-                previewWidth = previewHeight * aspectRatio;
-            }
-
             card.innerHTML = `
-                <div class="size-preview">
-                    <div class="size-ratio-box" style="width: ${previewWidth}px; height: ${previewHeight}px;"></div>
-                </div>
                 <div class="size-info">
                     <div class="size-label">${size.label}</div>
                     <div class="size-dimensions">${size.width}\u00d7${size.height}</div>
