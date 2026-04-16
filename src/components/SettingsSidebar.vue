@@ -29,13 +29,39 @@
       <div class="config-section">
         <h3 class="section-title">图片生成 API</h3>
         <div class="input-group">
-          <label>API 端点</label>
-          <input v-model="formImageEndpoint" type="text" placeholder="https://api.openai.com/v1/images/generations">
+          <label>提供商</label>
+          <select v-model="formImageProvider">
+            <option value="generic">通用</option>
+            <option value="gemini">Gemini</option>
+          </select>
         </div>
-        <div class="input-group">
-          <label>API 密钥</label>
-          <input v-model="formImageApiKey" type="password" placeholder="sk-...">
-        </div>
+        <template v-if="formImageProvider === 'generic'">
+          <div class="input-group">
+            <label>API 端点</label>
+            <input v-model="formImageEndpoint" type="text" placeholder="https://api.openai.com/v1/images/generations">
+          </div>
+          <div class="input-group">
+            <label>API 密钥</label>
+            <input v-model="formImageApiKey" type="password" placeholder="sk-...">
+          </div>
+        </template>
+        <template v-else>
+          <div class="input-group">
+            <label>API 端点</label>
+            <input v-model="formGeminiEndpoint" type="text" placeholder="https://generativelanguage.googleapis.com">
+          </div>
+          <div class="input-group">
+            <label>API 密钥</label>
+            <input v-model="formGeminiApiKey" type="password" placeholder="AIza...">
+          </div>
+          <div class="input-group">
+            <label>模型</label>
+            <select v-model="formGeminiImageModel">
+              <option value="gemini-2.0-flash-exp-image-generation">gemini-2.0-flash-exp-image-generation</option>
+              <option value="gemini-2.5-flash-preview-image-generation">gemini-2.5-flash-preview-image-generation</option>
+            </select>
+          </div>
+        </template>
       </div>
 
       <!-- 视频 API 配置 -->
@@ -110,6 +136,10 @@ const formImageApiKey = ref('');
 const formVideoEndpoint = ref('');
 const formVideoApiKey = ref('');
 const formTimeout = ref(60);
+const formImageProvider = ref('generic');
+const formGeminiEndpoint = ref('https://generativelanguage.googleapis.com');
+const formGeminiApiKey = ref('');
+const formGeminiImageModel = ref('gemini-2.0-flash-exp-image-generation');
 
 function openSidebar() {
   // 从 store 加载当前值到表单
@@ -119,6 +149,10 @@ function openSidebar() {
   formVideoEndpoint.value = configStore.videoEndpoint;
   formVideoApiKey.value = configStore.videoApiKey;
   formTimeout.value = configStore.timeout / 1000;
+  formImageProvider.value = configStore.imageProvider;
+  formGeminiEndpoint.value = configStore.geminiEndpoint;
+  formGeminiApiKey.value = configStore.geminiApiKey;
+  formGeminiImageModel.value = configStore.geminiImageModel;
 
   isOpen.value = true;
   document.body.style.overflow = 'hidden';
@@ -135,6 +169,10 @@ function saveSettings() {
   configStore.videoEndpoint = formVideoEndpoint.value;
   configStore.videoApiKey = formVideoApiKey.value;
   configStore.timeout = formTimeout.value * 1000;
+  configStore.imageProvider = formImageProvider.value;
+  configStore.geminiEndpoint = formGeminiEndpoint.value;
+  configStore.geminiApiKey = formGeminiApiKey.value;
+  configStore.geminiImageModel = formGeminiImageModel.value;
   configStore.saveToStorage();
   showNotification('配置已保存', 'success');
   closeSidebar();

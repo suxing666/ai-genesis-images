@@ -86,14 +86,13 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useConfigStore } from '../stores/config.js';
 import { useNotification } from '../composables/useNotification.js';
+import { generateImage as generateImageApi } from '../services/imageService.js';
 import FileUpload from '../components/FileUpload.vue';
 import SizeSelector from '../components/SizeSelector.vue';
 import StyleSelector from '../components/StyleSelector.vue';
 import ImageResults from '../components/ImageResults.vue';
 
-const configStore = useConfigStore();
 const { showNotification } = useNotification();
 
 const prompt = ref('');
@@ -137,47 +136,19 @@ async function generateImage() {
     return;
   }
 
-  if (!configStore.imageEndpoint || !configStore.imageApiKey) {
-    showNotification('请先配置图片生成 API', 'error');
-    return;
-  }
-
   isLoading.value = true;
   results.value = [];
 
   try {
-    const requestBody = {
+    const result = await generateImageApi({
       prompt: text,
       size: selectedSize.value,
       n: parseInt(imageCount.value),
-    };
-
-    if (selectedStyle.value && selectedStyle.value !== '-') {
-      requestBody.style = selectedStyle.value;
-    }
-
-    if (currentMode.value === 'img2img' && refImageData.value) {
-      requestBody.image = refImageData.value;
-    }
-
-    const response = await fetch(configStore.imageEndpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${configStore.imageApiKey}`,
-      },
-      body: JSON.stringify(requestBody),
-      signal: AbortSignal.timeout(configStore.timeout),
+      style: selectedStyle.value,
+      image: currentMode.value === 'img2img' ? refImageData.value : null,
     });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      const errorMessage = errorData.error?.message || errorData.message || `API 请求失败: ${response.status}`;
-      throw new Error(errorMessage);
-    }
-
-    const data = await response.json();
-    results.value = data.data || data.images || [];
+    results.value = result.images;
 
     if (results.value.length === 0) {
       showNotification('未生成任何图片', 'error');
