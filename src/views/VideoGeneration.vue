@@ -1,33 +1,41 @@
 <template>
-  <section class="panel active">
-    <div class="panel-card">
-      <div class="card-header">
-        <h2>视频创作</h2>
+  <section class="panel">
+    <div class="pixel-card p-5 md:p-8">
+      <div class="card-header mb-6 flex items-center gap-3 md:mb-8">
+        <span class="h-6 w-6 border-2 border-ink bg-[#29adff]"></span>
+        <h2 class="font-display text-base text-ink md:text-lg">视频创作</h2>
       </div>
 
       <div class="form-container">
         <!-- 提示词 -->
-        <div class="input-wrapper">
-          <label class="input-label">描述你的创意</label>
+        <div class="mb-6">
+          <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">描述你的创意</label>
           <textarea
             v-model="prompt"
             rows="4"
+            class="pixel-input resize-none leading-relaxed"
             placeholder="例如：海浪轻柔地拍打着金色沙滩，夕阳将天空染成橙红色，海鸥在远处飞翔"
           ></textarea>
         </div>
 
         <!-- 首帧 / 尾帧 -->
-        <div class="frame-inputs">
-          <div class="frame-item">
-            <label class="input-label">首帧图片 <span class="optional-tag">可选</span></label>
+        <div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div class="flex flex-col">
+            <label class="mb-2 flex items-center gap-2 font-pixel text-xs uppercase tracking-[0.15em] text-ink">
+              首帧图片
+              <span class="border-2 border-ink bg-[#29adff] px-1.5 py-0.5 text-[0.625rem] text-white">可选</span>
+            </label>
             <FileUpload
               v-model="firstFrameData"
               label="拖拽或点击上传首帧"
               hint="设置视频的起始画面"
             />
           </div>
-          <div class="frame-item">
-            <label class="input-label">尾帧图片 <span class="optional-tag">可选</span></label>
+          <div class="flex flex-col">
+            <label class="mb-2 flex items-center gap-2 font-pixel text-xs uppercase tracking-[0.15em] text-ink">
+              尾帧图片
+              <span class="border-2 border-ink bg-[#29adff] px-1.5 py-0.5 text-[0.625rem] text-white">可选</span>
+            </label>
             <FileUpload
               v-model="lastFrameData"
               label="拖拽或点击上传尾帧"
@@ -37,18 +45,18 @@
         </div>
 
         <!-- 参数 -->
-        <div class="params-grid">
-          <div class="param-item">
-            <label>时长</label>
-            <select v-model="duration">
+        <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">时长</label>
+            <select v-model="duration" class="pixel-select">
               <option value="5">5 秒</option>
               <option value="10">10 秒</option>
               <option value="15">15 秒</option>
             </select>
           </div>
-          <div class="param-item">
-            <label>分辨率</label>
-            <select v-model="resolution">
+          <div>
+            <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">分辨率</label>
+            <select v-model="resolution" class="pixel-select">
               <option value="720p">720p</option>
               <option value="1080p">1080p</option>
             </select>
@@ -56,19 +64,19 @@
         </div>
 
         <!-- 生成按钮 -->
-        <button class="generate-btn" :disabled="isLoading" @click="generateVideo">
-          <span class="btn-text">开始创作</span>
+        <button class="pixel-btn pixel-btn-red w-full py-4 text-sm" :disabled="isLoading" @click="generateVideo">
+          <span>开始创作</span>
         </button>
       </div>
 
       <!-- 加载状态 -->
-      <div class="loading-state" :class="{ active: isLoading }">
-        <div class="loading-spinner">
+      <div v-show="isLoading" class="loading-state py-10 text-center">
+        <div class="pixel-spinner mb-6">
           <div class="spinner-ring"></div>
           <div class="spinner-ring"></div>
           <div class="spinner-ring"></div>
         </div>
-        <p class="loading-text">正在生成视频，请稍候...</p>
+        <p class="pixel-blink font-pixel text-sm text-ink">正在生成视频，请稍候...</p>
       </div>
 
       <!-- 结果 -->

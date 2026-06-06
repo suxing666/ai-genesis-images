@@ -1,28 +1,30 @@
 <template>
-  <div class="style-selector-wrapper">
-    <label class="input-label">选择风格</label>
-    <div class="style-categories">
+  <div class="style-selector-wrapper mb-6">
+    <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">选择风格</label>
+    <div class="mb-4 flex flex-wrap gap-2">
       <button
         v-for="(label, key) in styleCategoryLabels"
         :key="key"
-        class="style-category-tab"
-        :class="{ active: currentCategory === key }"
+        class="pixel-tab"
+        :class="currentCategory === key ? 'pixel-tab-active' : ''"
         @click="switchCategory(key)"
       >
         {{ label }}
       </button>
     </div>
-    <div class="style-grid">
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
       <div
         v-for="style in currentStyles"
         :key="style.id"
-        class="style-card"
-        :class="{ selected: selectedStyleId === style.id }"
+        class="cursor-pointer border-4 border-ink p-3 text-center transition-all duration-100"
+        :class="selectedStyleId === style.id
+          ? 'bg-[#ffec27] text-bg translate-x-[2px] translate-y-[2px] shadow-none'
+          : 'bg-surface text-ink shadow-pixel-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none'"
         @click="toggleStyle(style)"
       >
         <div class="style-info">
-          <div class="style-label">{{ style.label }}</div>
-          <div class="style-hint">{{ getStyleHint(style.prompt) }}</div>
+          <div class="font-pixel text-xs">{{ style.label }}</div>
+          <div class="mt-1 truncate font-pixel text-[0.625rem] opacity-70">{{ getStyleHint(style.prompt) }}</div>
         </div>
       </div>
     </div>

@@ -1,28 +1,30 @@
 <template>
-  <div class="size-selector-wrapper">
-    <label class="input-label">选择尺寸</label>
-    <div class="size-categories">
+  <div class="size-selector-wrapper mb-6">
+    <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">选择尺寸</label>
+    <div class="mb-4 flex flex-wrap gap-2">
       <button
         v-for="(label, key) in categoryLabels"
         :key="key"
-        class="category-tab"
-        :class="{ active: currentCategory === key }"
+        class="pixel-tab"
+        :class="currentCategory === key ? 'pixel-tab-active' : ''"
         @click="switchCategory(key)"
       >
         {{ label }}
       </button>
     </div>
-    <div class="size-grid">
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
       <div
         v-for="size in currentSizes"
         :key="size.value"
-        class="size-card"
-        :class="{ selected: modelValue === size.value }"
+        class="cursor-pointer border-4 border-ink p-3 text-center transition-all duration-100"
+        :class="modelValue === size.value
+          ? 'bg-[#ffec27] text-bg translate-x-[2px] translate-y-[2px] shadow-none'
+          : 'bg-surface text-ink shadow-pixel-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none'"
         @click="selectSize(size.value)"
       >
         <div class="size-info">
-          <div class="size-label">{{ size.label }}</div>
-          <div class="size-dimensions">{{ size.width }}&times;{{ size.height }}</div>
+          <div class="font-pixel text-xs">{{ size.label }}</div>
+          <div class="mt-1 font-pixel text-[0.625rem] opacity-70">{{ size.width }}&times;{{ size.height }}</div>
         </div>
       </div>
     </div>

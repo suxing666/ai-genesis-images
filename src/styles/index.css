@@ -1,11 +1,177 @@
-@import './variables.css';
-@import './background.css';
-@import './sidebar.css';
-@import './layout.css';
-@import './size-selector.css';
-@import './style-selector.css';
-@import './generate.css';
-@import './results.css';
-@import './notification.css';
-@import './scrollbar.css';
-@import './responsive.css';
+@import "tailwindcss";
+
+/* ============================================================
+   中文像素字体 Zpix（最像素）
+   说明：通过 jsDelivr 加载；font-display:swap 保证不阻塞渲染，
+   若加载失败则按字体栈回退到 monospace（应用不受影响）。
+   ============================================================ */
+@font-face {
+  font-family: 'Zpix';
+  src: url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font/dist/Zpix.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/npm/zpix@latest/Zpix.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   设计令牌（Tailwind v4 @theme）
+   暗色系：仅把"随主题变化"的 4 个颜色令牌化集中管理，自动生成
+   bg-* / text-* / border-* / placeholder-* 工具类；PICO-8 强调色
+   （红/黄/蓝/绿/粉）在暗底上本就醒目，继续用 arbitrary value 字面量。
+   ============================================================ */
+@theme {
+  --font-display: 'Press Start 2P', 'Zpix', monospace;
+  --font-pixel: 'Zpix', 'Press Start 2P', ui-monospace, monospace;
+
+  /* 暗色语义色（避开 base 以免与 text-base 字号工具类冲突） */
+  --color-bg: #13141f;       /* 页面底色（最深） */
+  --color-surface: #1a1c2c;  /* 卡片 / 输入 / 按钮基底 / 导航 */
+  --color-ink: #fff1e8;      /* 描边 / 硬边阴影 / 主文字（暖白） */
+  --color-muted: #a8a39a;    /* 次要文字 / 占位符 / 提示 */
+
+  /* 硬边偏移阴影改引用 ink（var 在 :root 上运行时解析） */
+  --shadow-pixel-sm: 2px 2px 0 var(--color-ink);
+  --shadow-pixel: 4px 4px 0 var(--color-ink);
+  --shadow-pixel-lg: 6px 6px 0 var(--color-ink);
+}
+
+/* ============================================================
+   基础层：页面底色 + 像素网格、粗像素滚动条、拖拽光标、动画关键帧
+   ============================================================ */
+@layer base {
+  body {
+    font-family: var(--font-pixel);
+    color: var(--color-ink);
+    background-color: var(--color-bg);
+    background-image:
+      linear-gradient(rgba(255, 241, 232, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 241, 232, 0.05) 1px, transparent 1px);
+    background-size: 16px 16px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* 粗像素滚动条 */
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+    border-left: 2px solid var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ink);
+    border: 2px solid var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #ff004d;
+  }
+
+  /* 悬浮设置按钮的拖拽光标（配合 useDraggable 切换 .dragging） */
+  .settings-btn {
+    cursor: grab;
+  }
+  .settings-btn.dragging {
+    cursor: grabbing;
+  }
+
+  /* 像素加载动画关键帧 */
+  @keyframes pixel-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes pixel-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+/* ============================================================
+   组件层：高复用像素组件类（卡片 / 输入 / 按钮 / 标签 / 加载器）
+   ============================================================ */
+@layer components {
+  /* 卡片：深色表面 + 粗暖白边 + 硬阴影 */
+  .pixel-card {
+    @apply bg-surface border-4 border-ink shadow-pixel;
+  }
+
+  /* 输入 / 文本域：深色表面 + 粗暖白边，聚焦时蓝色内描边 */
+  .pixel-input {
+    @apply w-full bg-surface border-4 border-ink text-ink placeholder-muted
+           px-4 py-3 font-pixel transition-all
+           focus:outline-none focus:shadow-[inset_0_0_0_3px_#29adff];
+  }
+
+  /* 下拉框：自包含像素输入样式 + 像素三角箭头（不 @apply 自定义类，保证 v4 可编译） */
+  .pixel-select {
+    @apply w-full cursor-pointer appearance-none border-4 border-ink bg-surface px-4 py-3 pr-10
+           font-pixel text-ink transition-all
+           focus:outline-none focus:shadow-[inset_0_0_0_3px_#29adff];
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23fff1e8' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+  }
+
+  /* 按钮基类：粗暖白边 + 硬阴影 + hover 位移 + active 按下贴合 */
+  .pixel-btn {
+    @apply inline-flex items-center justify-center gap-2 border-4 border-ink
+           font-display uppercase tracking-wider shadow-pixel transition-all duration-100
+           hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-pixel-sm
+           active:translate-x-[4px] active:translate-y-[4px] active:shadow-none
+           disabled:opacity-40 disabled:pointer-events-none cursor-pointer;
+  }
+  /* 颜色变体：与 .pixel-btn 一起使用，如 class="pixel-btn pixel-btn-red" */
+  .pixel-btn-red {
+    @apply bg-[#ff004d] text-white;
+  }
+  .pixel-btn-yellow {
+    @apply bg-[#ffec27] text-bg;
+  }
+  .pixel-btn-dark {
+    @apply bg-bg text-ink;
+  }
+
+  /* 标签 / 分类切换 chip */
+  .pixel-tab {
+    @apply inline-flex items-center gap-1 border-4 border-ink bg-surface text-ink
+           px-3 py-2 font-display uppercase text-xs tracking-wider
+           shadow-pixel-sm transition-all duration-100 cursor-pointer
+           hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none;
+  }
+  .pixel-tab-active {
+    @apply bg-[#ffec27] text-bg translate-x-[2px] translate-y-[2px] shadow-none;
+  }
+
+  /* 像素加载器：层叠方块 + 步进旋转 */
+  .pixel-spinner {
+    @apply relative mx-auto;
+    width: 48px;
+    height: 48px;
+  }
+  .pixel-spinner .spinner-ring {
+    position: absolute;
+    inset: 0;
+    border: 4px solid var(--color-ink);
+    border-top-color: transparent;
+    animation: pixel-spin 1s steps(8, end) infinite;
+  }
+  .pixel-spinner .spinner-ring:nth-child(2) {
+    inset: 8px;
+    border-color: #ff004d;
+    border-top-color: transparent;
+    animation-duration: 0.8s;
+  }
+  .pixel-spinner .spinner-ring:nth-child(3) {
+    inset: 16px;
+    border-color: #29adff;
+    border-top-color: transparent;
+    animation-duration: 0.6s;
+  }
+  .pixel-blink {
+    animation: pixel-blink 1s steps(1, end) infinite;
+  }
+}

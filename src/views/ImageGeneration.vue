@@ -1,38 +1,40 @@
 <template>
-  <section class="panel active">
-    <div class="panel-card">
-      <div class="card-header">
-        <h2>图片创作</h2>
+  <section class="panel">
+    <div class="pixel-card p-5 md:p-8">
+      <div class="card-header mb-6 flex items-center gap-3 md:mb-8">
+        <span class="h-6 w-6 border-2 border-ink bg-[#ff004d]"></span>
+        <h2 class="font-display text-base text-ink md:text-lg">图片创作</h2>
       </div>
 
       <div class="form-container">
         <!-- 模式切换 -->
-        <div class="mode-switcher">
+        <div class="mb-6 grid grid-cols-2 gap-3">
           <button
-            class="mode-btn"
-            :class="{ active: currentMode === 'text2img' }"
+            class="pixel-btn py-3 text-xs"
+            :class="currentMode === 'text2img' ? 'bg-[#ffec27] text-bg' : 'bg-surface text-ink'"
             @click="currentMode = 'text2img'"
           >文字生图</button>
           <button
-            class="mode-btn"
-            :class="{ active: currentMode === 'img2img' }"
+            class="pixel-btn py-3 text-xs"
+            :class="currentMode === 'img2img' ? 'bg-[#ffec27] text-bg' : 'bg-surface text-ink'"
             @click="currentMode = 'img2img'"
           >图生图</button>
         </div>
 
         <!-- 提示词 -->
-        <div class="input-wrapper">
-          <label class="input-label">描述你的创意</label>
+        <div class="mb-6">
+          <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">描述你的创意</label>
           <textarea
             v-model="prompt"
             rows="4"
+            class="pixel-input resize-none leading-relaxed"
             placeholder="例如：一只优雅的黑猫坐在霓虹灯闪烁的东京街头，赛博朋克风格，电影级光影"
           ></textarea>
         </div>
 
         <!-- 参考图片（图生图模式） -->
-        <div v-show="currentMode === 'img2img'" class="ref-image-section">
-          <label class="input-label">参考图片</label>
+        <div v-show="currentMode === 'img2img'" class="mb-6">
+          <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">参考图片</label>
           <FileUpload
             v-model="refImageData"
             label="拖拽或点击上传参考图片"
@@ -51,31 +53,29 @@
         />
 
         <!-- 参数设置 -->
-        <div class="params-grid">
-          <div class="param-item">
-            <label>数量</label>
-            <select v-model="imageCount">
-              <option value="1">1 张</option>
-              <option value="2">2 张</option>
-              <option value="4">4 张</option>
-            </select>
-          </div>
+        <div class="mb-6">
+          <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">数量</label>
+          <select v-model="imageCount" class="pixel-select sm:max-w-[14rem]">
+            <option value="1">1 张</option>
+            <option value="2">2 张</option>
+            <option value="4">4 张</option>
+          </select>
         </div>
 
         <!-- 生成按钮 -->
-        <button class="generate-btn" :disabled="isLoading" @click="generateImage">
-          <span class="btn-text">开始创作</span>
+        <button class="pixel-btn pixel-btn-red w-full py-4 text-sm" :disabled="isLoading" @click="generateImage">
+          <span>开始创作</span>
         </button>
       </div>
 
       <!-- 加载状态 -->
-      <div class="loading-state" :class="{ active: isLoading }">
-        <div class="loading-spinner">
+      <div v-show="isLoading" class="loading-state py-10 text-center">
+        <div class="pixel-spinner mb-6">
           <div class="spinner-ring"></div>
           <div class="spinner-ring"></div>
           <div class="spinner-ring"></div>
         </div>
-        <p class="loading-text">正在生成图片...</p>
+        <p class="pixel-blink font-pixel text-sm text-ink">正在生成图片...</p>
       </div>
 
       <!-- 结果 -->
