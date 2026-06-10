@@ -1,75 +1,172 @@
 @import "tailwindcss";
 
 /* ============================================================
-   中文像素字体 Zpix（最像素）
-   说明：通过 jsDelivr 加载；font-display:swap 保证不阻塞渲染，
-   若加载失败则按字体栈回退到 monospace（应用不受影响）。
-   ============================================================ */
-@font-face {
-  font-family: 'Zpix';
-  src: url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font/dist/Zpix.woff2') format('woff2'),
-       url('https://cdn.jsdelivr.net/npm/zpix@latest/Zpix.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* ============================================================
-   设计令牌（Tailwind v4 @theme）
-   暗色系：仅把"随主题变化"的 4 个颜色令牌化集中管理，自动生成
-   bg-* / text-* / border-* / placeholder-* 工具类；PICO-8 强调色
-   （红/黄/蓝/绿/粉）在暗底上本就醒目，继续用 arbitrary value 字面量。
+   Codesign Aesthetic —— 温暖编辑风设计系统
+   奶油纸面 + 单一陶土色强调 + Fraunces 衬线（仅品牌时刻）
+   + Plus Jakarta Sans 无衬线（界面）+ JetBrains Mono 等宽（数字）。
+   令牌映射到 Tailwind v4 @theme，自动生成 bg-* / text-* / border-* 等工具类。
    ============================================================ */
 @theme {
-  --font-display: 'Press Start 2P', 'Zpix', monospace;
-  --font-pixel: 'Zpix', 'Press Start 2P', ui-monospace, monospace;
+  /* —— 字体 —— */
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Fraunces", "Times New Roman", Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* 暗色语义色（避开 base 以免与 text-base 字号工具类冲突） */
-  --color-bg: #13141f;       /* 页面底色（最深） */
-  --color-surface: #1a1c2c;  /* 卡片 / 输入 / 按钮基底 / 导航 */
-  --color-ink: #fff1e8;      /* 描边 / 硬边阴影 / 主文字（暖白） */
-  --color-muted: #a8a39a;    /* 次要文字 / 占位符 / 提示 */
+  /* —— 表面：温暖奶油，从不纯白 —— */
+  --color-canvas: #faf8f3;          /* 页面底色（奶油） */
+  --color-canvas-2: #f3efe6;        /* 分区色带 */
+  --color-surface: #ffffff;         /* 卡片 / 输入 / 面板 */
+  --color-surface-hover: #f7f4ec;   /* 悬停填充 */
+  --color-surface-active: #efeae0;  /* 按下填充 */
 
-  /* 硬边偏移阴影改引用 ink（var 在 :root 上运行时解析） */
-  --shadow-pixel-sm: 2px 2px 0 var(--color-ink);
-  --shadow-pixel: 4px 4px 0 var(--color-ink);
-  --shadow-pixel-lg: 6px 6px 0 var(--color-ink);
+  /* —— 边框：温暖灰褐发丝线 —— */
+  --color-line: #e3ddd0;
+  --color-line-muted: #ece6d8;
+
+  /* —— 强调：陶土色（唯一品牌色） —— */
+  --color-accent: #c96442;
+  --color-accent-hover: #b75636;
+  --color-accent-muted: #f3d9cf;    /* 浅陶土底（徽章 / 选中态） */
+  --color-focus-ring: rgba(201, 100, 66, 0.3);
+  --color-on-accent: #ffffff;
+
+  /* —— 文字：温暖近黑，从不纯黑 —— */
+  --color-ink: #1f1d18;             /* 主文字 + 标题 */
+  --color-ink-soft: #57544c;        /* 次要文字 */
+  --color-ink-muted: #8c887d;       /* 元信息 / 说明 */
+
+  /* —— 语义色：克制，仅用于状态 —— */
+  --color-success: #4f7a52;
+  --color-warning: #b8862a;
+  --color-error: #b04030;
+
+  /* —— 圆角：友好，略大 —— */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 14px;
+  --radius-2xl: 18px;
+
+  /* —— 阴影：暖色调，三档 —— */
+  --shadow-soft: 0 1px 2px rgba(31, 29, 24, 0.04);
+  --shadow-card: 0 2px 8px rgba(31, 29, 24, 0.06);
+  --shadow-elevated: 0 8px 24px rgba(31, 29, 24, 0.1);
+
+  /* —— 缓动 —— */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* —— 字号阶梯：严格 8 档（10/12/13/15/17/20/28/36） —— */
+  --text-2xs: 10px;
+  --text-2xs--line-height: 1.4;
+  --text-xs: 12px;
+  --text-xs--line-height: 1.4;
+  --text-sm: 13px;
+  --text-sm--line-height: 1.5;
+  --text-base: 15px;
+  --text-base--line-height: 1.6;
+  --text-md: 17px;
+  --text-md--line-height: 1.5;
+  --text-lg: 20px;
+  --text-lg--line-height: 1.3;
+  --text-xl: 28px;
+  --text-xl--line-height: 1.2;
+  --text-2xl: 36px;
+  --text-2xl--line-height: 1.15;
+}
+
+/* 暗色模式：温暖炭黑，从不蓝黑。重新赋值令牌即可级联到所有工具类。
+   （应用默认保持浅色奶油外观；为 .dark 祖先元素预留，便于未来接入切换。） */
+.dark {
+  --color-canvas: #1a1815;
+  --color-canvas-2: #221f1b;
+  --color-surface: #26221d;
+  --color-surface-hover: #2d2925;
+  --color-surface-active: #34302b;
+
+  --color-line: #3a352f;
+  --color-line-muted: #2f2b26;
+
+  --color-accent: #d97757;
+  --color-accent-hover: #e88868;
+  --color-accent-muted: #4a2b22;
+  --color-focus-ring: rgba(217, 119, 87, 0.35);
+  --color-on-accent: #1a1815;
+
+  --color-ink: #f5f1e8;
+  --color-ink-soft: #b8b3a6;
+  --color-ink-muted: #807b6f;
+
+  --color-success: #6b9c6e;
+  --color-warning: #d4a04a;
+  --color-error: #d96050;
+
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 /* ============================================================
-   基础层：页面底色 + 像素网格、粗像素滚动条、拖拽光标、动画关键帧
+   基础层
    ============================================================ */
 @layer base {
   body {
-    font-family: var(--font-pixel);
+    font-family: var(--font-sans);
     color: var(--color-ink);
-    background-color: var(--color-bg);
-    background-image:
-      linear-gradient(rgba(255, 241, 232, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 241, 232, 0.05) 1px, transparent 1px);
-    background-size: 16px 16px;
+    background-color: var(--color-canvas);
+    font-size: var(--text-base);
+    line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
-  /* 粗像素滚动条 */
+  /* 标题用无衬线 600，紧字距（衬线只留给品牌时刻 .display）。 */
+  h1, h2, h3, h4 {
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+
+  /* 品牌时刻才启用编辑衬线（Fraunces）。 */
+  .display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  /* 等宽表格数字：任何数字 / 价格 / 指标 / 代码。 */
+  .num, code, kbd, pre, samp {
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* 全局 focus-visible —— 每个可交互元素继承（除非组件覆盖）。 */
+  :where(button, a, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* 细发丝暖色滚动条 */
   ::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--color-bg);
-    border-left: 2px solid var(--color-ink);
+    background: var(--color-canvas);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-ink);
-    border: 2px solid var(--color-bg);
+    background: var(--color-line);
+    border: 2px solid var(--color-canvas);
+    border-radius: var(--radius-full, 9999px);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #ff004d;
+    background: var(--color-ink-muted);
   }
 
-  /* 悬浮设置按钮的拖拽光标（配合 useDraggable 切换 .dragging） */
+  /* 悬浮设置按钮拖拽光标（配合 useDraggable 切换 .dragging） */
   .settings-btn {
     cursor: grab;
   }
@@ -77,101 +174,272 @@
     cursor: grabbing;
   }
 
-  /* 像素加载动画关键帧 */
-  @keyframes pixel-spin {
-    to {
-      transform: rotate(360deg);
-    }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
-  @keyframes pixel-blink {
-    50% {
-      opacity: 0;
+  @keyframes toast-in {
+    from { opacity: 0; transform: translate(-50%, -12px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
     }
   }
 }
 
 /* ============================================================
-   组件层：高复用像素组件类（卡片 / 输入 / 按钮 / 标签 / 加载器）
+   组件层：高复用组件类（卡片 / 按钮 / 输入 / 标签 / 选块 / 徽章 / 加载器）
+   深度优先来自表面色调 + 1px 暖边，阴影只留给真正悬浮的元素。
    ============================================================ */
 @layer components {
-  /* 卡片：深色表面 + 粗暖白边 + 硬阴影 */
-  .pixel-card {
-    @apply bg-surface border-4 border-ink shadow-pixel;
+  /* —— 卡片 —— */
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+  }
+  .card-interactive {
+    transition: transform 200ms var(--ease-out),
+                box-shadow 200ms var(--ease-out),
+                border-color 200ms var(--ease-out);
+  }
+  .card-interactive:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent-muted);
+    box-shadow: var(--shadow-elevated);
   }
 
-  /* 输入 / 文本域：深色表面 + 粗暖白边，聚焦时蓝色内描边 */
-  .pixel-input {
-    @apply w-full bg-surface border-4 border-ink text-ink placeholder-muted
-           px-4 py-3 font-pixel transition-all
-           focus:outline-none focus:shadow-[inset_0_0_0_3px_#29adff];
+  /* —— 字段标签：全大写小标签 —— */
+  .field-label {
+    display: block;
+    font-size: var(--text-xs);
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
   }
 
-  /* 下拉框：自包含像素输入样式 + 像素三角箭头（不 @apply 自定义类，保证 v4 可编译） */
-  .pixel-select {
-    @apply w-full cursor-pointer appearance-none border-4 border-ink bg-surface px-4 py-3 pr-10
-           font-pixel text-ink transition-all
-           focus:outline-none focus:shadow-[inset_0_0_0_3px_#29adff];
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23fff1e8' stroke-width='3'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  /* —— 输入 / 文本域 —— */
+  .input {
+    width: 100%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    color: var(--color-ink);
+    padding: 10px 12px;
+    font-size: var(--text-base);
+    line-height: 1.5;
+    transition: border-color 150ms var(--ease-out),
+                box-shadow 150ms var(--ease-out);
+  }
+  .input::placeholder {
+    color: var(--color-ink-muted);
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-focus-ring);
+  }
+
+  /* —— 下拉框：输入样式 + 陶土色箭头 —— */
+  .select {
+    width: 100%;
+    cursor: pointer;
+    appearance: none;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    color: var(--color-ink);
+    padding: 10px 38px 10px 12px;
+    font-size: var(--text-base);
+    line-height: 1.5;
+    transition: border-color 150ms var(--ease-out),
+                box-shadow 150ms var(--ease-out);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23c96442' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 0.75rem center;
+    background-position: right 12px center;
+  }
+  .select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-focus-ring);
   }
 
-  /* 按钮基类：粗暖白边 + 硬阴影 + hover 位移 + active 按下贴合 */
-  .pixel-btn {
-    @apply inline-flex items-center justify-center gap-2 border-4 border-ink
-           font-display uppercase tracking-wider shadow-pixel transition-all duration-100
-           hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-pixel-sm
-           active:translate-x-[4px] active:translate-y-[4px] active:shadow-none
-           disabled:opacity-40 disabled:pointer-events-none cursor-pointer;
+  /* —— 按钮基类 —— */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: var(--text-base);
+    line-height: 1;
+    padding: 0 18px;
+    height: var(--btn-h, 40px);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform 150ms var(--ease-out),
+                background-color 150ms var(--ease-out),
+                border-color 150ms var(--ease-out),
+                box-shadow 150ms var(--ease-out),
+                color 150ms var(--ease-out);
   }
-  /* 颜色变体：与 .pixel-btn 一起使用，如 class="pixel-btn pixel-btn-red" */
-  .pixel-btn-red {
-    @apply bg-[#ff004d] text-white;
+  .btn:disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
-  .pixel-btn-yellow {
-    @apply bg-[#ffec27] text-bg;
-  }
-  .pixel-btn-dark {
-    @apply bg-bg text-ink;
-  }
-
-  /* 标签 / 分类切换 chip */
-  .pixel-tab {
-    @apply inline-flex items-center gap-1 border-4 border-ink bg-surface text-ink
-           px-3 py-2 font-display uppercase text-xs tracking-wider
-           shadow-pixel-sm transition-all duration-100 cursor-pointer
-           hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none;
-  }
-  .pixel-tab-active {
-    @apply bg-[#ffec27] text-bg translate-x-[2px] translate-y-[2px] shadow-none;
+  .btn:active {
+    transform: scale(0.97);
   }
 
-  /* 像素加载器：层叠方块 + 步进旋转 */
-  .pixel-spinner {
-    @apply relative mx-auto;
-    width: 48px;
-    height: 48px;
+  /* 主按钮：陶土实底 */
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    box-shadow: var(--shadow-soft);
   }
-  .pixel-spinner .spinner-ring {
-    position: absolute;
-    inset: 0;
-    border: 4px solid var(--color-ink);
-    border-top-color: transparent;
-    animation: pixel-spin 1s steps(8, end) infinite;
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-card);
   }
-  .pixel-spinner .spinner-ring:nth-child(2) {
-    inset: 8px;
-    border-color: #ff004d;
-    border-top-color: transparent;
-    animation-duration: 0.8s;
+  .btn-primary:active {
+    transform: scale(0.97);
   }
-  .pixel-spinner .spinner-ring:nth-child(3) {
-    inset: 16px;
-    border-color: #29adff;
-    border-top-color: transparent;
-    animation-duration: 0.6s;
+
+  /* 次按钮：表面 + 1px 边 */
+  .btn-secondary {
+    background: var(--color-surface);
+    border-color: var(--color-line);
+    color: var(--color-ink);
   }
-  .pixel-blink {
-    animation: pixel-blink 1s steps(1, end) infinite;
+  .btn-secondary:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-accent-muted);
+  }
+
+  /* 幽灵按钮 */
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-ink-soft);
+  }
+  .btn-ghost:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-ink);
+  }
+
+  /* 危险（破坏性操作，克制使用） */
+  .btn-danger {
+    background: var(--color-surface);
+    border-color: var(--color-line);
+    color: var(--color-error);
+  }
+  .btn-danger:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-error);
+  }
+
+  /* —— 标签 / 分段切换 chip —— */
+  .tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: var(--radius-full, 9999px);
+    background: transparent;
+    color: var(--color-ink-soft);
+    border: 1px solid transparent;
+    padding: 7px 14px;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 150ms var(--ease-out),
+                color 150ms var(--ease-out),
+                border-color 150ms var(--ease-out);
+  }
+  .tab:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-ink);
+  }
+  .tab-active,
+  .tab-active:hover {
+    background: var(--color-accent-muted);
+    color: var(--color-accent);
+    border-color: transparent;
+  }
+
+  /* —— 可选块（尺寸 / 风格 / 模式格子） —— */
+  .tile {
+    cursor: pointer;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    color: var(--color-ink);
+    transition: transform 150ms var(--ease-out),
+                background-color 150ms var(--ease-out),
+                border-color 150ms var(--ease-out),
+                box-shadow 150ms var(--ease-out);
+  }
+  .tile:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-accent-muted);
+    transform: translateY(-1px);
+  }
+  .tile-active,
+  .tile-active:hover {
+    background: var(--color-accent-muted);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    transform: none;
+  }
+
+  /* —— 徽章 —— */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: var(--radius-full, 9999px);
+    background: var(--color-accent-muted);
+    color: var(--color-accent);
+    padding: 2px 8px;
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .badge-neutral {
+    background: var(--color-canvas-2);
+    color: var(--color-ink-soft);
+  }
+
+  /* —— 步骤 / 计数圆徽 —— */
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-full, 9999px);
+    background: var(--color-accent-muted);
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum";
+    font-size: var(--text-sm);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  /* —— 加载器：陶土环 —— */
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid var(--color-accent-muted);
+    border-top-color: var(--color-accent);
+    animation: spin 0.8s linear infinite;
   }
 }

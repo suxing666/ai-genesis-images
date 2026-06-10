@@ -1,0 +1,191 @@
+/**
+ * codesign-aesthetic — paste-ready design tokens.
+ *
+ * Warm editorial "Claude Design" system: cream surfaces, terracotta accent,
+ * editorial serif for brand moments, geometric sans for UI, mono tabular
+ * numerals for data. Values mirror open-codesign's packages/ui/src/tokens.css
+ * (which also ships OKLCH equivalents); these sRGB hex values are the portable
+ * default. Reference the variables — never hardcode literals in components.
+ *
+ * Fonts (all OFL / MIT-compatible). Either self-host via @fontsource:
+ *   import '@fontsource-variable/fraunces';
+ *   import '@fontsource-variable/geist';
+ *   import '@fontsource-variable/jetbrains-mono';
+ * or load from a CDN, e.g.:
+ *   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Plus+Jakarta+Sans:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap" rel="stylesheet">
+ * (Plus Jakarta Sans is the marketing-site sans; Geist is the app sans — pick one.)
+ */
+
+:root {
+  /* Surface — warm cream */
+  --color-background: #faf8f3;
+  --color-background-secondary: #f3efe6;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f7f4ec;
+  --color-surface-active: #efeae0;
+  --color-surface-muted: #f3efe6;
+
+  /* Border — warm taupe hairlines */
+  --color-border: #e3ddd0;
+  --color-border-muted: #ece6d8;
+  --color-border-subtle: #f3efe6;
+
+  /* Accent — terracotta (the single brand hue) */
+  --color-accent: #c96442;
+  --color-accent-hover: #b75636;
+  --color-accent-muted: #f3d9cf;
+  --color-focus-ring: rgba(201, 100, 66, 0.3);
+  --color-on-accent: #ffffff;
+
+  /* Text — warm, never pure black */
+  --color-text-primary: #1f1d18;
+  --color-text-secondary: #57544c;
+  --color-text-muted: #8c887d;
+
+  /* Semantic — muted, for status only */
+  --color-success: #4f7a52;
+  --color-warning: #b8862a;
+  --color-error: #b04030;
+
+  /* Shadow — warm-tinted, three discrete levels */
+  --shadow-soft: 0 1px 2px rgba(31, 29, 24, 0.04);
+  --shadow-card: 0 2px 8px rgba(31, 29, 24, 0.06);
+  --shadow-elevated: 0 8px 24px rgba(31, 29, 24, 0.1);
+
+  /* Typography */
+  --font-display: "Fraunces Variable", "Times New Roman", Georgia, serif;
+  --font-sans: "Geist Variable", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type scale — strict 8 sizes */
+  --text-2xs: 10px;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 17px;
+  --text-lg: 20px;
+  --text-xl: 28px;
+  --text-2xl: 36px;
+  --text-display: 48px;
+
+  /* Line height */
+  --leading-heading: 1.2;
+  --leading-ui: 1.4;
+  --leading-body: 1.6;
+
+  /* Letter spacing */
+  --tracking-heading: -0.01em;
+  --tracking-tight: -0.02em;
+  --tracking-label: 0.08em;
+
+  /* Spacing — strict 4px grid */
+  --space-0-5: 2px;
+  --space-1: 4px;
+  --space-1-5: 6px;
+  --space-2: 8px;
+  --space-2-5: 10px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Radius — friendly, slightly larger */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 14px;
+  --radius-2xl: 18px;
+  --radius-full: 9999px;
+
+  /* Control heights */
+  --size-control-sm: 32px;
+  --size-control-md: 40px;
+  --size-control-lg: 48px;
+
+  /* Motion — subtle, editorial */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 120ms;
+  --duration-faster: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --transition-base: all var(--duration-base) var(--ease-out);
+  --transition-fast: all var(--duration-fast) var(--ease-out);
+}
+
+.dark {
+  /* Warm dark — charcoal, not blue-black */
+  --color-background: #1a1815;
+  --color-background-secondary: #221f1b;
+  --color-surface: #26221d;
+  --color-surface-hover: #2d2925;
+  --color-surface-active: #34302b;
+  --color-surface-muted: #221f1b;
+
+  --color-border: #3a352f;
+  --color-border-muted: #2f2b26;
+  --color-border-subtle: #26221d;
+
+  --color-accent: #d97757;
+  --color-accent-hover: #e88868;
+  --color-accent-muted: #4a2b22;
+  --color-focus-ring: rgba(217, 119, 87, 0.35);
+  --color-on-accent: #1a1815;
+
+  --color-text-primary: #f5f1e8;
+  --color-text-secondary: #b8b3a6;
+  --color-text-muted: #807b6f;
+
+  --color-success: #6b9c6e;
+  --color-warning: #d4a04a;
+  --color-error: #d96050;
+
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Base — body uses the sans; reserve the serif for explicit brand moments. */
+body {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+/* Opt a heading into the editorial serif for brand moments. */
+.display {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-tight);
+}
+
+/* Monospaced tabular numerals for code and any figure. */
+code, kbd, pre, .mono, .num {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum";
+}
+
+/* Global focus-visible — every interactive element inherits unless overridden. */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,12 +1,12 @@
 <template>
   <div class="size-selector-wrapper mb-6">
-    <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">选择尺寸</label>
-    <div class="mb-4 flex flex-wrap gap-2">
+    <label class="field-label mb-2">选择尺寸</label>
+    <div class="mb-4 flex flex-wrap gap-1.5">
       <button
         v-for="(label, key) in categoryLabels"
         :key="key"
-        class="pixel-tab"
-        :class="currentCategory === key ? 'pixel-tab-active' : ''"
+        class="tab"
+        :class="currentCategory === key ? 'tab-active' : ''"
         @click="switchCategory(key)"
       >
         {{ label }}
@@ -16,16 +16,12 @@
       <div
         v-for="size in currentSizes"
         :key="size.value"
-        class="cursor-pointer border-4 border-ink p-3 text-center transition-all duration-100"
-        :class="modelValue === size.value
-          ? 'bg-[#ffec27] text-bg translate-x-[2px] translate-y-[2px] shadow-none'
-          : 'bg-surface text-ink shadow-pixel-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none'"
+        class="tile p-3 text-center"
+        :class="modelValue === size.value ? 'tile-active' : ''"
         @click="selectSize(size.value)"
       >
-        <div class="size-info">
-          <div class="font-pixel text-xs">{{ size.label }}</div>
-          <div class="mt-1 font-pixel text-[0.625rem] opacity-70">{{ size.width }}&times;{{ size.height }}</div>
-        </div>
+        <div class="text-sm font-semibold">{{ size.label }}</div>
+        <div class="num mt-1 text-2xs text-ink-muted">{{ size.width }}×{{ size.height }}</div>
       </div>
     </div>
   </div>

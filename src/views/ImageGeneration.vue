@@ -1,40 +1,46 @@
 <template>
   <section class="panel">
-    <div class="pixel-card p-5 md:p-8">
-      <div class="card-header mb-6 flex items-center gap-3 md:mb-8">
-        <span class="h-6 w-6 border-2 border-ink bg-[#ff004d]"></span>
-        <h2 class="font-display text-base text-ink md:text-lg">图片创作</h2>
+    <div class="card p-6 md:p-8">
+      <div class="mb-7 flex items-center gap-3 md:mb-8">
+        <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-muted text-accent">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+        </span>
+        <h2 class="text-lg font-semibold text-ink md:text-xl">图片创作</h2>
       </div>
 
       <div class="form-container">
         <!-- 模式切换 -->
-        <div class="mb-6 grid grid-cols-2 gap-3">
+        <div class="mb-6 inline-flex w-full gap-1 rounded-full border border-line p-1 sm:w-auto">
           <button
-            class="pixel-btn py-3 text-xs"
-            :class="currentMode === 'text2img' ? 'bg-[#ffec27] text-bg' : 'bg-surface text-ink'"
+            class="tab flex-1 justify-center sm:flex-initial sm:px-6"
+            :class="currentMode === 'text2img' ? 'tab-active' : ''"
             @click="currentMode = 'text2img'"
           >文字生图</button>
           <button
-            class="pixel-btn py-3 text-xs"
-            :class="currentMode === 'img2img' ? 'bg-[#ffec27] text-bg' : 'bg-surface text-ink'"
+            class="tab flex-1 justify-center sm:flex-initial sm:px-6"
+            :class="currentMode === 'img2img' ? 'tab-active' : ''"
             @click="currentMode = 'img2img'"
           >图生图</button>
         </div>
 
         <!-- 提示词 -->
         <div class="mb-6">
-          <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">描述你的创意</label>
+          <label class="field-label mb-2">描述你的创意</label>
           <textarea
             v-model="prompt"
             rows="4"
-            class="pixel-input resize-none leading-relaxed"
+            class="input resize-none leading-relaxed"
             placeholder="例如：一只优雅的黑猫坐在霓虹灯闪烁的东京街头，赛博朋克风格，电影级光影"
           ></textarea>
         </div>
 
         <!-- 参考图片（图生图模式） -->
         <div v-show="currentMode === 'img2img'" class="mb-6">
-          <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">参考图片</label>
+          <label class="field-label mb-2">参考图片</label>
           <FileUpload
             v-model="refImageData"
             label="拖拽或点击上传参考图片"
@@ -53,9 +59,9 @@
         />
 
         <!-- 参数设置 -->
-        <div class="mb-6">
-          <label class="mb-2 block font-pixel text-xs uppercase tracking-[0.15em] text-ink">数量</label>
-          <select v-model="imageCount" class="pixel-select sm:max-w-[14rem]">
+        <div class="mb-7">
+          <label class="field-label mb-2">数量</label>
+          <select v-model="imageCount" class="select num sm:max-w-[14rem]">
             <option value="1">1 张</option>
             <option value="2">2 张</option>
             <option value="4">4 张</option>
@@ -63,19 +69,16 @@
         </div>
 
         <!-- 生成按钮 -->
-        <button class="pixel-btn pixel-btn-red w-full py-4 text-sm" :disabled="isLoading" @click="generateImage">
+        <button class="btn btn-primary h-12 w-full text-md" :disabled="isLoading" @click="generateImage">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v4M3 5h4M6 17v4m-2-2h4"></path><path d="M13 3 16 9l6 3-6 3-3 6-3-6-6-3 6-3 3-6Z"></path></svg>
           <span>开始创作</span>
         </button>
       </div>
 
       <!-- 加载状态 -->
-      <div v-show="isLoading" class="loading-state py-10 text-center">
-        <div class="pixel-spinner mb-6">
-          <div class="spinner-ring"></div>
-          <div class="spinner-ring"></div>
-          <div class="spinner-ring"></div>
-        </div>
-        <p class="pixel-blink font-pixel text-sm text-ink">正在生成图片...</p>
+      <div v-show="isLoading" class="py-12 text-center">
+        <div class="spinner mx-auto mb-5"></div>
+        <p class="text-sm text-ink-soft">正在生成图片...</p>
       </div>
 
       <!-- 结果 -->

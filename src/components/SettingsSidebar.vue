@@ -2,11 +2,11 @@
   <!-- 设置按钮（悬浮，可拖拽，useDraggable 依赖 .settings-btn 类名与 fixed 定位） -->
   <button
     ref="settingsBtnRef"
-    class="settings-btn fixed bottom-6 right-6 z-[100] flex h-14 w-14 items-center justify-center border-4 border-ink bg-[#ffec27] text-bg shadow-pixel transition-opacity duration-300"
+    class="settings-btn fixed bottom-6 right-6 z-[100] flex h-14 w-14 items-center justify-center rounded-full bg-accent text-[color:var(--color-on-accent)] shadow-elevated transition-all duration-200 hover:bg-accent-hover hover:-translate-y-0.5"
     :class="{ 'pointer-events-none opacity-0': uiStore.settingsOpen }"
     aria-label="打开设置"
   >
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="3"></circle>
       <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
     </svg>
@@ -14,18 +14,18 @@
 
   <!-- 侧边栏 -->
   <aside
-    class="fixed right-0 top-0 z-[90] h-screen w-full max-w-[420px] overflow-y-auto border-l-4 border-ink bg-surface shadow-[-6px_0_0_var(--color-ink)] transition-transform duration-300"
+    class="fixed right-0 top-0 z-[90] h-screen w-full max-w-[420px] overflow-y-auto border-l border-line bg-canvas shadow-elevated transition-transform duration-300"
     :class="uiStore.settingsOpen ? 'translate-x-0' : 'translate-x-full'"
   >
     <div class="p-6 md:p-8">
-      <div class="mb-6 flex items-center justify-between">
-        <h2 class="font-display text-base text-ink md:text-lg">配置中心</h2>
+      <div class="mb-7 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-ink md:text-xl">配置中心</h2>
         <button
-          class="flex h-9 w-9 items-center justify-center border-4 border-ink bg-surface text-ink shadow-pixel-sm transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none cursor-pointer"
+          class="flex h-9 w-9 items-center justify-center rounded-md text-ink-soft transition-colors hover:bg-surface-hover hover:text-ink"
           aria-label="关闭侧边栏"
           @click="closeSidebar"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
@@ -33,37 +33,39 @@
       </div>
 
       <!-- 图片 API 配置 -->
-      <div class="mb-6 border-b-4 border-ink pb-6">
-        <h3 class="mb-3 font-pixel text-xs uppercase tracking-[0.15em] text-ink">图片生成 API</h3>
+      <div class="mb-6 border-b border-line pb-6">
+        <h3 class="mb-4 flex items-center gap-2 text-sm font-semibold text-ink">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>图片生成 API
+        </h3>
         <div class="mb-4">
-          <label class="mb-1.5 block font-pixel text-[0.6875rem] uppercase tracking-wider text-muted">提供商</label>
-          <select v-model="formImageProvider" class="pixel-select">
+          <label class="field-label mb-1.5">提供商</label>
+          <select v-model="formImageProvider" class="select">
             <option value="generic">通用</option>
             <option value="gemini">Gemini</option>
           </select>
         </div>
         <template v-if="formImageProvider === 'generic'">
           <div class="mb-4">
-            <label class="mb-1.5 block font-pixel text-[0.6875rem] uppercase tracking-wider text-muted">API 端点</label>
-            <input v-model="formImageEndpoint" type="text" class="pixel-input" placeholder="https://api.openai.com/v1/images/generations">
+            <label class="field-label mb-1.5">API 端点</label>
+            <input v-model="formImageEndpoint" type="text" class="input num text-sm" placeholder="https://api.openai.com/v1/images/generations">
           </div>
           <div class="mb-4">
-            <label class="mb-1.5 block font-pixel text-[0.6875rem] uppercase tracking-wider text-muted">API 密钥</label>
-            <input v-model="formImageApiKey" type="password" class="pixel-input" placeholder="sk-...">
+            <label class="field-label mb-1.5">API 密钥</label>
+            <input v-model="formImageApiKey" type="password" class="input num text-sm" placeholder="sk-...">
           </div>
         </template>
         <template v-else>
           <div class="mb-4">
-            <label class="mb-1.5 block font-pixel text-[0.6875rem] uppercase tracking-wider text-muted">API 端点</label>
-            <input v-model="formGeminiEndpoint" type="text" class="pixel-input" placeholder="https://generativelanguage.googleapis.com">
+            <label class="field-label mb-1.5">API 端点</label>
+            <input v-model="formGeminiEndpoint" type="text" class="input num text-sm" placeholder="https://generativelanguage.googleapis.com">
           </div>
           <div class="mb-4">
-            <label class="mb-1.5 block font-pixel text-[0.6875rem] uppercase tracking-wider text-muted">API 密钥</label>
-            <input v-model="formGeminiApiKey" type="password" class="pixel-input" placeholder="AIza...">
+            <label class="field-label mb-1.5">API 密钥</label>
+            <input v-model="formGeminiApiKey" type="password" class="input num text-sm" placeholder="AIza...">
           </div>
           <div class="mb-4">
-            <label class="mb-1.5 block font-pixel text-[0.6875rem] uppercase tracking-wider text-muted">模型</label>
-            <select v-model="formGeminiImageModel" class="pixel-select">
+            <label class="field-label mb-1.5">模型</label>
+            <select v-model="formGeminiImageModel" class="select num text-sm">
               <option value="gemini-2.0-flash-exp-image-generation">gemini-2.0-flash-exp-image-generation</option>
               <option value="gemini-2.5-flash-preview-image-generation">gemini-2.5-flash-preview-image-generation</option>
             </select>
@@ -72,39 +74,43 @@
       </div>
 
       <!-- 视频 API 配置 -->
-      <div class="mb-6 border-b-4 border-ink pb-6">
-        <h3 class="mb-3 font-pixel text-xs uppercase tracking-[0.15em] text-ink">视频生成 API</h3>
+      <div class="mb-6 border-b border-line pb-6">
+        <h3 class="mb-4 flex items-center gap-2 text-sm font-semibold text-ink">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>视频生成 API
+        </h3>
         <div class="mb-4">
-          <label class="mb-1.5 block font-pixel text-[0.6875rem] uppercase tracking-wider text-muted">API 端点</label>
-          <input v-model="formVideoEndpoint" type="text" class="pixel-input" placeholder="https://api.runwayml.com/v1/generate">
+          <label class="field-label mb-1.5">API 端点</label>
+          <input v-model="formVideoEndpoint" type="text" class="input num text-sm" placeholder="https://api.runwayml.com/v1/generate">
         </div>
         <div class="mb-4">
-          <label class="mb-1.5 block font-pixel text-[0.6875rem] uppercase tracking-wider text-muted">API 密钥</label>
-          <input v-model="formVideoApiKey" type="password" class="pixel-input" placeholder="your-api-key">
+          <label class="field-label mb-1.5">API 密钥</label>
+          <input v-model="formVideoApiKey" type="password" class="input num text-sm" placeholder="your-api-key">
         </div>
       </div>
 
       <!-- 高级设置 -->
-      <div class="mb-6 border-b-4 border-ink pb-6">
-        <h3 class="mb-3 font-pixel text-xs uppercase tracking-[0.15em] text-ink">高级设置</h3>
-        <div class="mb-4">
-          <label class="mb-1.5 block font-pixel text-[0.6875rem] uppercase tracking-wider text-muted">请求超时（秒）</label>
+      <div class="mb-6 border-b border-line pb-6">
+        <h3 class="mb-4 flex items-center gap-2 text-sm font-semibold text-ink">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>高级设置
+        </h3>
+        <div>
+          <label class="field-label mb-1.5">请求超时（秒）</label>
           <div class="relative">
             <input
               v-model.number="formTimeout"
               type="number"
               min="1"
               max="600"
-              class="pixel-input pr-12 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              class="input num pr-14 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             >
-            <div class="absolute right-0 top-0 flex h-full w-10 flex-col border-l-4 border-ink">
-              <button type="button" class="increment flex flex-1 items-center justify-center bg-surface text-ink transition-colors hover:bg-[#ffec27] hover:text-bg" aria-label="增加" @click="formTimeout = Math.min(600, formTimeout + 1)">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <div class="absolute bottom-1 right-1 top-1 flex w-10 flex-col overflow-hidden rounded-md border border-line">
+              <button type="button" class="flex flex-1 items-center justify-center text-ink-soft transition-colors hover:bg-accent-muted hover:text-accent" aria-label="增加" @click="formTimeout = Math.min(600, formTimeout + 1)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="18 15 12 9 6 15"></polyline>
                 </svg>
               </button>
-              <button type="button" class="decrement flex flex-1 items-center justify-center border-t-2 border-ink bg-surface text-ink transition-colors hover:bg-[#ffec27] hover:text-bg" aria-label="减少" @click="formTimeout = Math.max(1, formTimeout - 1)">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <button type="button" class="flex flex-1 items-center justify-center border-t border-line text-ink-soft transition-colors hover:bg-accent-muted hover:text-accent" aria-label="减少" @click="formTimeout = Math.max(1, formTimeout - 1)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
               </button>
@@ -113,14 +119,11 @@
         </div>
       </div>
 
-      <button class="pixel-btn pixel-btn-red mb-3 w-full py-3 text-xs" @click="saveSettings">保存配置</button>
-      <button
-        class="mb-2 w-full cursor-pointer border-4 border-[#ff004d] bg-surface px-4 py-3 font-display text-xs uppercase tracking-wider text-[#ff004d] shadow-[4px_4px_0_#ff004d] transition-all duration-100 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_#ff004d] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none"
-        @click="clearCache"
-      >清空缓存</button>
+      <button class="btn btn-primary mb-3 h-11 w-full" @click="saveSettings">保存配置</button>
+      <button class="btn btn-danger h-11 w-full" @click="clearCache">清空缓存</button>
 
-      <div class="mt-4 flex items-start gap-2 border-2 border-ink bg-bg p-3 font-pixel text-[0.6875rem] text-ink">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mt-0.5 flex-shrink-0">
+      <div class="mt-5 flex items-start gap-2.5 rounded-md border border-line bg-canvas-2 p-3 text-xs leading-relaxed text-ink-soft">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mt-0.5 flex-shrink-0 text-ink-muted">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="12" y1="16" x2="12" y2="12"></line>
           <line x1="12" y1="8" x2="12.01" y2="8"></line>
@@ -132,7 +135,7 @@
 
   <!-- 遮罩层 -->
   <div
-    class="fixed inset-0 z-[80] bg-bg/70 transition-opacity duration-300"
+    class="fixed inset-0 z-[80] bg-ink/40 backdrop-blur-sm transition-opacity duration-300"
     :class="uiStore.settingsOpen ? 'opacity-100' : 'pointer-events-none opacity-0'"
     @click="closeSidebar"
   ></div>
