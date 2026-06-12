@@ -1,7 +1,8 @@
 import { sizePresets } from '../data/sizePresets.js';
 
-// Gemini 支持的宽高比
-const GEMINI_RATIOS = ['1:1', '3:4', '4:3', '9:16', '16:9'];
+// Gemini 3.x / 2.5 Flash Image 支持的宽高比（Nano Banana 系列）
+// 官方完整集合还包含 1:4/1:8/4:1/8:1 等极端比例，此处保留常见比例以避免普通壁纸尺寸误匹配
+const GEMINI_RATIOS = ['1:1', '2:3', '3:2', '3:4', '4:3', '4:5', '5:4', '9:16', '16:9', '21:9'];
 
 // 将比例字符串转为十进制值
 function ratioToDecimal(ratio) {
@@ -74,4 +75,27 @@ export function mapSizeToAspectRatio(pixelSize) {
   }
 
   return '1:1'; // 兜底
+}
+
+/**
+ * 将像素尺寸映射为 GPT Image 支持的预设尺寸
+ * GPT Image 系列统一支持的三种尺寸：1024x1024（方）/ 1536x1024（横）/ 1024x1536（竖）
+ * gpt-image-2 虽支持 16 倍数的任意尺寸，但 gpt-image-1/mini 不支持，
+ * 故统一按宽高比就近映射到这三种预设，保证全系列模型可用
+ * @param {string} pixelSize - 如 "1920x1080"
+ * @returns {string} OpenAI 尺寸，如 "1536x1024"
+ */
+export function mapSizeToOpenAISize(pixelSize) {
+  const parts = pixelSize.split('x').map(Number);
+  if (parts.length !== 2 || !parts[0] || !parts[1]) {
+    return '1024x1024';
+  }
+  const ratio = parts[0] / parts[1];
+  if (ratio > 1.2) {
+    return '1536x1024'; // 横向
+  }
+  if (ratio < 0.83) {
+    return '1024x1536'; // 纵向
+  }
+  return '1024x1024'; // 近似方形
 }

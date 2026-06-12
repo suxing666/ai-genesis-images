@@ -1,10 +1,12 @@
 import { useConfigStore } from '../stores/config.js';
 import { generateImage as genericGenerate } from './providers/generic.js';
 import { generateImage as geminiGenerate } from './providers/gemini.js';
+import { generateImage as openaiGenerate } from './providers/openai.js';
 
 const providers = {
   generic: genericGenerate,
   gemini: geminiGenerate,
+  openai: openaiGenerate,
 };
 
 /**

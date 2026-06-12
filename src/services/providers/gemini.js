@@ -4,6 +4,23 @@ import { mapSizeToAspectRatio } from '../sizeMapping.js';
 const GEMINI_DEFAULT_BASE = 'https://generativelanguage.googleapis.com';
 
 /**
+ * 解析最终请求地址：
+ * - 留空时回退到官方地址 https://generativelanguage.googleapis.com
+ * - 以 # 结尾：视为完整地址，去掉 # 后直接访问（不再拼接路径与 key）
+ * - 否则自动去除末尾多余的 /，再拼接标准路径
+ * @param {string} baseUrl - 用户配置的端点
+ * @param {string} model - 模型名
+ * @param {string} apiKey - API 密钥
+ */
+function resolveEndpoint(baseUrl, model, apiKey) {
+  const base = (baseUrl || '').trim() || GEMINI_DEFAULT_BASE;
+  if (base.endsWith('#')) {
+    return base.slice(0, -1);
+  }
+  return `${base.replace(/\/+$/, '')}/v1beta/models/${model}:generateContent?key=${apiKey}`;
+}
+
+/**
  * 从 data URL 解析 mime type 和 base64 数据
  * @param {string} dataUrl - 如 "data:image/png;base64,iVBOR..."
  */
@@ -76,9 +93,8 @@ function extractImages(responseData) {
 /**
  * 发送单个 Gemini generateContent 请求
  */
-async function callGenerateContent({ prompt, aspectRatio, image, apiKey, model, timeout, baseUrl }) {
-  const base = (baseUrl || GEMINI_DEFAULT_BASE).replace(/\/+$/, '');
-  const endpoint = `${base}/v1beta/models/${model}:generateContent?key=${apiKey}`;
+async function callGenerateContent({ prompt, aspectRatio, imageSize, image, apiKey, model, timeout, baseUrl }) {
+  const endpoint = resolveEndpoint(baseUrl, model, apiKey);
 
   // 构建 parts
   const parts = [{ text: prompt }];
@@ -98,11 +114,17 @@ async function callGenerateContent({ prompt, aspectRatio, image, apiKey, model, 
     },
   };
 
-  // 添加宽高比配置
+  // 图片配置：宽高比 + 分辨率（Nano Banana 系列支持）
+  const imageConfig = {};
   if (aspectRatio) {
-    requestBody.generationConfig.imageConfig = {
-      aspectRatio,
-    };
+    imageConfig.aspectRatio = aspectRatio;
+  }
+  // 仅在显式指定分辨率时下发（auto/留空则交由模型自动决定，兼容旧模型）
+  if (imageSize) {
+    imageConfig.imageSize = imageSize;
+  }
+  if (Object.keys(imageConfig).length > 0) {
+    requestBody.generationConfig.imageConfig = imageConfig;
   }
 
   const response = await fetch(endpoint, {
@@ -150,6 +172,9 @@ export async function generateImage({ prompt, size, n, style, image }) {
   const callParams = {
     prompt: fullPrompt,
     aspectRatio,
+    imageSize: config.geminiResolution && config.geminiResolution !== 'auto'
+      ? config.geminiResolution
+      : null,
     image,
     apiKey: config.geminiApiKey,
     model: config.geminiImageModel,

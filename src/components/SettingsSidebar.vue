@@ -41,6 +41,7 @@
           <label class="field-label mb-1.5">提供商</label>
           <select v-model="formImageProvider" class="select">
             <option value="generic">通用</option>
+            <option value="openai">GPT (OpenAI)</option>
             <option value="gemini">Gemini</option>
           </select>
         </div>
@@ -52,6 +53,31 @@
           <div class="mb-4">
             <label class="field-label mb-1.5">API 密钥</label>
             <input v-model="formImageApiKey" type="password" class="input num text-sm" placeholder="sk-...">
+          </div>
+        </template>
+        <template v-else-if="formImageProvider === 'openai'">
+          <div class="mb-4">
+            <label class="field-label mb-1.5">API 端点</label>
+            <input v-model="formOpenaiEndpoint" type="text" class="input num text-sm" placeholder="https://api.openai.com">
+          </div>
+          <div class="mb-4">
+            <label class="field-label mb-1.5">API 密钥</label>
+            <input v-model="formOpenaiApiKey" type="password" class="input num text-sm" placeholder="sk-...">
+          </div>
+          <div class="mb-4">
+            <label class="field-label mb-1.5">模型</label>
+            <select v-model="formOpenaiImageModel" class="select num text-sm">
+              <option value="gpt-image-2">gpt-image-2</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="field-label mb-1.5">质量</label>
+            <select v-model="formOpenaiQuality" class="select num text-sm">
+              <option value="auto">自动</option>
+              <option value="low">低（最快）</option>
+              <option value="medium">中</option>
+              <option value="high">高（最慢，启用推理）</option>
+            </select>
           </div>
         </template>
         <template v-else>
@@ -66,8 +92,18 @@
           <div class="mb-4">
             <label class="field-label mb-1.5">模型</label>
             <select v-model="formGeminiImageModel" class="select num text-sm">
-              <option value="gemini-2.0-flash-exp-image-generation">gemini-2.0-flash-exp-image-generation</option>
-              <option value="gemini-2.5-flash-preview-image-generation">gemini-2.5-flash-preview-image-generation</option>
+              <option value="gemini-3-pro-image">gemini-3-pro-image（Nano Banana Pro）</option>
+              <option value="gemini-3.1-flash-image">gemini-3.1-flash-image（Nano Banana 2）</option>
+              <option value="gemini-2.5-flash-image">gemini-2.5-flash-image（Nano Banana）</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="field-label mb-1.5">分辨率</label>
+            <select v-model="formGeminiResolution" class="select num text-sm">
+              <option value="auto">自动</option>
+              <option value="1K">1K</option>
+              <option value="2K">2K</option>
+              <option value="4K">4K（仅 3.x 模型）</option>
             </select>
           </div>
         </template>
@@ -161,9 +197,14 @@ const formVideoEndpoint = ref('');
 const formVideoApiKey = ref('');
 const formTimeout = ref(60);
 const formImageProvider = ref('generic');
-const formGeminiEndpoint = ref('https://generativelanguage.googleapis.com');
+const formOpenaiEndpoint = ref('');
+const formOpenaiApiKey = ref('');
+const formOpenaiImageModel = ref('gpt-image-2');
+const formOpenaiQuality = ref('auto');
+const formGeminiEndpoint = ref('');
 const formGeminiApiKey = ref('');
-const formGeminiImageModel = ref('gemini-2.0-flash-exp-image-generation');
+const formGeminiImageModel = ref('gemini-2.5-flash-image');
+const formGeminiResolution = ref('auto');
 
 // 从 store 加载当前值到表单
 function loadForm() {
@@ -174,9 +215,14 @@ function loadForm() {
   formVideoApiKey.value = configStore.videoApiKey;
   formTimeout.value = configStore.timeout / 1000;
   formImageProvider.value = configStore.imageProvider;
+  formOpenaiEndpoint.value = configStore.openaiEndpoint;
+  formOpenaiApiKey.value = configStore.openaiApiKey;
+  formOpenaiImageModel.value = configStore.openaiImageModel;
+  formOpenaiQuality.value = configStore.openaiQuality;
   formGeminiEndpoint.value = configStore.geminiEndpoint;
   formGeminiApiKey.value = configStore.geminiApiKey;
   formGeminiImageModel.value = configStore.geminiImageModel;
+  formGeminiResolution.value = configStore.geminiResolution;
 }
 
 // 监听全局开关：打开时回填表单并锁定背景滚动，关闭时复原
@@ -203,9 +249,14 @@ function saveSettings() {
   configStore.videoApiKey = formVideoApiKey.value;
   configStore.timeout = formTimeout.value * 1000;
   configStore.imageProvider = formImageProvider.value;
+  configStore.openaiEndpoint = formOpenaiEndpoint.value;
+  configStore.openaiApiKey = formOpenaiApiKey.value;
+  configStore.openaiImageModel = formOpenaiImageModel.value;
+  configStore.openaiQuality = formOpenaiQuality.value;
   configStore.geminiEndpoint = formGeminiEndpoint.value;
   configStore.geminiApiKey = formGeminiApiKey.value;
   configStore.geminiImageModel = formGeminiImageModel.value;
+  configStore.geminiResolution = formGeminiResolution.value;
   configStore.saveToStorage();
   showNotification('配置已保存', 'success');
   closeSidebar();
